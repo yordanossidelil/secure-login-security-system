@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="card">
+    <h2>🛡️ Dashboard</h2>
+    <div *ngIf="user" class="user-info">
+      <p>Welcome, <strong>{{ user.username }}</strong>!</p>
+      <p>Email: {{ user.email }}</p>
+      <p>Role: <span class="badge">{{ user.role }}</span></p>
+    </div>
+    <div class="security-info">
+      <h3>🔒 Security Status</h3>
+      <p>✅ You are authenticated with a JWT token.</p>
+      <p>✅ Your account is protected against brute-force attacks.</p>
+      <p>✅ Account locks after 5 failed login attempts.</p>
+    </div>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</div>
