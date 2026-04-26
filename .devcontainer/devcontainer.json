@@ -1,0 +1,17 @@
+{
+  "name": "Secure Login System",
+  "forwardPorts": [3000, 4200],
+  "portsAttributes": {
+    "3000": {
+      "label": "Backend API",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    },
+    "4200": {
+      "label": "Angular Frontend",
+      "onAutoForward": "openBrowser",
+      "visibility": "public"
+    }
+  },
+  "postCreateCommand": "cd backend && npm install"
+}

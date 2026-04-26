@@ -3,9 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 
+function getApiUrl(): string {
+  const host = window.location.hostname;
+  // GitHub Codespaces: replace the port segment in the forwarded hostname
+  if (host.includes('app.github.dev')) {
+    return `https://${host.replace('-4200', '-3000')}/api/auth`;
+  }
+  return 'http://localhost:3000/api/auth';
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private api = 'http://localhost:3000/api/auth';
+  private api = getApiUrl();
 
   constructor(private http: HttpClient, private router: Router) {}
 

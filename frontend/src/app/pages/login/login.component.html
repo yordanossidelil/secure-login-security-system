@@ -1,24 +1,57 @@
 <div class="container">
   <div class="card">
+
+    <!-- SPEC: Page title with lock icon to indicate secure login -->
     <h2>🔐 Secure Login</h2>
 
+    <!-- SPEC: Security alert shown when account is locked or suspicious activity detected.
+         Displays backend message (e.g. "Account locked. Try again in 14 minutes.") -->
     <div *ngIf="error" class="alert alert-error">
       ⚠️ {{ error }}
     </div>
 
+    <!-- SPEC: Login form — uses Angular template-driven forms (ngForm, ngModel)
+         Submits email + password to POST /api/auth/login -->
     <form (ngSubmit)="onSubmit()" #f="ngForm">
+
+      <!-- SPEC: Email field — required, HTML5 email validation -->
       <div class="form-group">
         <label>Email</label>
-        <input type="email" [(ngModel)]="email" name="email" required placeholder="Enter your email" />
+        <input
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          required
+          placeholder="Enter your email"
+        />
+        <small class="hint">💡 Use the email you registered with</small>
       </div>
+
+      <!-- SPEC: Password field — required, value is never stored in plain text -->
       <div class="form-group">
         <label>Password</label>
-        <input type="password" [(ngModel)]="password" name="password" required placeholder="Enter your password" />
+        <input
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+          placeholder="Enter your password"
+        />
+        <small class="hint">💡 Password is hashed with bcrypt on the server</small>
       </div>
+
+      <!-- SPEC: Submit button disabled while loading or form is invalid.
+           Prevents duplicate requests on slow connections -->
       <button type="submit" [disabled]="loading || !f.valid">
         {{ loading ? 'Logging in...' : 'Login' }}
       </button>
+
     </form>
+
+    <!-- SPEC: Brute-force info shown below form for user awareness -->
+    <div class="spec-note">
+      🔒 Account locks after <strong>5 failed attempts</strong> for 15 minutes
+    </div>
 
     <p class="link">Don't have an account? <a routerLink="/register">Register</a></p>
   </div>

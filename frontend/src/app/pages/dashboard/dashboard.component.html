@@ -1,17 +1,41 @@
 <div class="container">
   <div class="card">
+
+    <!-- SPEC: Dashboard — only accessible to authenticated users.
+         Protected by AuthGuard which checks for a valid JWT in localStorage.
+         If no token exists, user is redirected to /login automatically. -->
     <h2>🛡️ Dashboard</h2>
+
+    <!-- SPEC: User info loaded from localStorage (set during login response).
+         Data comes from JWT payload: id, username, email, role -->
     <div *ngIf="user" class="user-info">
       <p>Welcome, <strong>{{ user.username }}</strong>!</p>
+      <!-- SPEC: Email displayed from decoded JWT user object -->
       <p>Email: {{ user.email }}</p>
+      <!-- SPEC: Role is either 'user' or 'admin' — admins can unlock accounts -->
       <p>Role: <span class="badge">{{ user.role }}</span></p>
     </div>
+
+    <!-- SPEC: Security status panel — explains the active protections to the user -->
     <div class="security-info">
-      <h3>🔒 Security Status</h3>
-      <p>✅ You are authenticated with a JWT token.</p>
-      <p>✅ Your account is protected against brute-force attacks.</p>
-      <p>✅ Account locks after 5 failed login attempts.</p>
+      <h3>🔒 Security Features Active</h3>
+      <!-- SPEC: JWT token stored in localStorage, sent as Bearer token in Authorization header -->
+      <p>✅ Authenticated via JWT (expires in 2 hours)</p>
+      <!-- SPEC: bcrypt hashing with salt rounds = 12 used on all passwords -->
+      <p>✅ Password protected with bcrypt hashing</p>
+      <!-- SPEC: failedLoginAttempts tracked in MongoDB User schema -->
+      <p>✅ Failed login attempts tracked in database</p>
+      <!-- SPEC: isLocked = true and lockUntil set after 5 failed attempts -->
+      <p>✅ Account locks after 5 failed login attempts</p>
+      <!-- SPEC: lockUntil timestamp checked on each login — auto-unlocks after 15 min -->
+      <p>✅ Auto-unlock after 15 minutes</p>
+      <!-- SPEC: Admin can call POST /api/auth/unlock-user to manually unlock -->
+      <p>✅ Admin can manually unlock accounts via API</p>
     </div>
+
+    <!-- SPEC: Logout clears token + user from localStorage and navigates to /login.
+         Also calls POST /api/auth/logout on the backend (stateless — for logging purposes) -->
     <button class="logout-btn" (click)="logout()">Logout</button>
+
   </div>
 </div>
